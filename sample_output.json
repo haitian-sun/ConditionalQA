@@ -1,0 +1,26 @@
+[
+  {
+    "id": "test-0",
+    "answers": [
+      [
+        "yes",
+        []
+      ],
+      [
+        "no",
+        []
+      ]
+    ]
+  },
+  {
+    "id": "test-1",
+    "answers": [
+      [
+        "hello world",
+        [
+          "<p>Welcome to ConditionalQA.</p>"
+        ]
+      ]
+    ]
+  }
+]
