@@ -22,29 +22,55 @@ def evaluate(prediction_filename, reference_filename):
   qid2predictions = load_answers(prediction_filename)
   qid2references = load_answers(reference_filename)
   
-  num_data = 0
-  (total_em, total_conditonal_em, total_f1, 
-      total_conditional_f1) = 0.0, 0.0, 0.0, 0.0
+  (total_em, total_conditional_em, total_f1, total_conditional_f1
+      ) = list(), list(), list(), list()
+  yesno_questions = list()
+  extractive_questions = list()
+  conditional_questions = list()
 
-  for qid in qid2references.keys():
+  print("evaluation starts...")
+  i = 0
+  for _, qid in enumerate(qid2references.keys()):
     if qid not in qid2predictions:
       em, conditional_em, f1, conditional_f1 = 0.0, 0.0, 0.0, 0.0
     else:
       em, conditional_em, f1, conditional_f1 = compute_metrics(
           qid2predictions[qid], qid2references[qid])
-      num_data += 1
 
-    total_em += em
-    total_conditonal_em += conditional_em
-    total_f1 += f1
-    total_conditional_f1 += conditional_f1
-    num_data += 1
+      total_em.append(em)
+      total_conditional_em.append(conditional_em)
+      total_f1.append(f1)
+      total_conditional_f1.append(conditional_f1)
+
+      if not qid2references[qid]:
+        pass
+      elif any(ans[0] in ["yes", "no"] for ans in qid2references[qid]):
+        yesno_questions.append(i)
+      else:
+        extractive_questions.append(i)
+
+      if any(ans[1] for ans in qid2references[qid]):
+        conditional_questions.append(i)
+      
+      i += 1
+
+  def update_metrics(questions, prefix=""):
+    return {
+        prefix + "em": 
+            sum(total_em[i] for i in questions) / len(questions), 
+        prefix + "em_with_conditions": 
+            sum(total_conditional_em[i] for i in questions) / len(questions),
+        prefix + "f1": 
+            sum(total_f1[i] for i in questions) / len(questions),
+        prefix + "f1_with_conditions": 
+            sum(total_conditional_f1[i] for i in questions) / len(questions),
+    }
 
   return {
-      "em": total_em / num_data, 
-      "em_with_conditions": total_conditonal_em / num_data,
-      "f1": total_f1 / num_data, 
-      "f1_with_conditions": total_conditional_f1 / num_data
+      "total": update_metrics(range(len(total_em))),
+      "yesno": update_metrics(yesno_questions),
+      "extractive": update_metrics(extractive_questions),
+      "conditional": update_metrics(conditional_questions),
   }
 
 
