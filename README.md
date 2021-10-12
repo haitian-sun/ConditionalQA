@@ -11,7 +11,7 @@ python evaluate.py --pred_file=sample_output.json --ref_file=v1_0/dev.json
 ```
 
 ### Leaderboard
-Submit your predictions to the [Leaderboard](https://competitions.codalab.org/competitions/35738).
+Submit your predictions to the [Leaderboard](https://competitions.codalab.org/competitions/35824).
 
 Please email your Codalab username to **haitians@cs.cmu.edu** if you would like your results to be added to the leaderboard. Include your organisation, a link to your paper, and a short description of your model in the email.
 
