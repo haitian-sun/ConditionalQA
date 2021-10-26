@@ -56,13 +56,13 @@ def evaluate(prediction_filename, reference_filename):
 
   def update_metrics(questions, prefix=""):
     return {
-        prefix + "em": 
+        prefix + "EM": 
             sum(total_em[i] for i in questions) / len(questions), 
-        prefix + "em_with_conditions": 
+        prefix + "EM_with_conditions": 
             sum(total_conditional_em[i] for i in questions) / len(questions),
-        prefix + "f1": 
+        prefix + "F1": 
             sum(total_f1[i] for i in questions) / len(questions),
-        prefix + "f1_with_conditions": 
+        prefix + "F1_with_conditions": 
             sum(total_conditional_f1[i] for i in questions) / len(questions),
     }
 
@@ -133,6 +133,8 @@ def compute_metrics(prediction, reference):
   gamma = math.exp(1.0 - len(prediction) / num_answer)
   max_em *= gamma
   max_f1 *= gamma
+  max_conditional_em *= gamma
+  max_conditional_f1 *= gamma
 
   return max_em, max_conditional_em, max_f1, max_conditional_f1
 
