@@ -101,7 +101,7 @@ def compute_metrics(prediction, reference):
   num_answer = len(reference)
 
   if len(prediction) < num_answer:
-    prediction.extend([("", list()) * (num_answer - len(prediction))])
+    prediction.extend([("", list())] * (num_answer - len(prediction)))
   
   # iterate through all possible permutations
   max_em, max_f1 = 0.0, 0.0
