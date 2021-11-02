@@ -180,6 +180,9 @@ def compute_conditions_f1(predicted_conditions, true_conditions):
   if not predicted_conditions:
     return 0.0
 
+  true_conditions = list(set(true_conditions))
+  predicted_conditions = list(set(predicted_conditions))
+
   correct = sum([
       int(c in true_conditions) for c in predicted_conditions])
   precision = correct / len(predicted_conditions)
